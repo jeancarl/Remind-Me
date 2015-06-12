@@ -1,0 +1,70 @@
+<!-- Filename: index.html -->
+<!doctype html>
+
+<!DOCTYPE html> 
+<html ng-app="reminderApp">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1"> 
+  <title>Remind Me!</title> 
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+  <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <script src="reminder.js"></script>
+</head> 
+
+<body> 
+
+<div data-role="page">
+
+  <div data-role="header" data-theme="b">
+    <h1>Remind Me!</h1>
+  </div><!-- /header -->
+
+  <div data-role="content"> 
+    <div ng-controller="ReminderListController as reminderList">
+      <h3>My Phone #</h3>
+      <input type="text" ng-model="reminderList.phonenumber" ng-blur="reminderList.fetchList()" />
+      
+      <h3>My Reminders <div ng-show="reminderList.syncing">Syncing...</div></h3>
+      <ul data-role="listview" data-inset="true" data-split-icon="delete" data-split-theme="d">
+        <li ng-repeat="reminder in reminderList.reminders | orderBy:'time'">
+          <a href="#" ><h2>{{reminder.text}}</h2>
+          <p>{{reminder.time | date:"MM/dd hh:mm a"}}</p>
+          <a href="#" ng-click="reminderList.removeReminder(reminder)" data-rel="popup" data-position-to="window" data-transition="pop">Remove Reminder</a>
+        </a>
+        </li>
+      </ul>
+      <div ng-hide="reminderList.reminders.length > 0">
+        You have no reminders!
+      </div>
+      
+      <form ng-show="reminderList.phonenumber.length == 10">
+        <h3>New Reminder</h3>
+        <input type="text" ng-model="reminderList.reminderText"  size="30"
+               placeholder="remind me about..."> 
+        <div class="ui-grid-a">
+          <div class="ui-block-a">
+            on<br />
+            <input type="date" ng-model="reminderList.reminderDate" />
+          </div>
+          <div class="ui-block-b">
+            at<br />
+            <input type="time" ng-model="reminderList.reminderTime"/>
+          </div>
+        </div>
+        <input class="btn-primary" type="button" ng-click="reminderList.addReminder()" value="Add">
+      </form>
+    </div>
+  </div><!-- /content -->
+  
+  <div data-role="footer" data-theme="b">
+    <h4>Copyright (c) JeanCarl Bisson</h4>
+  </div><!-- /footer -->
+  
+</div><!-- /page -->
+
+</body>
+</html>
